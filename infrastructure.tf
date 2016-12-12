@@ -29,15 +29,6 @@ data "template_file" "init_puppetmaster" {
     }
 }
 
-output "puppet_ip" {
-  value = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
-}
-
-output "puppet_host" {
-  value = "${openstack_compute_instance_v2.puppet.name}"
-}
-
-
 data "template_file" "init_jenkinsmaster" {
     template = "${file("bootstrap/bootstrap_agent.tpl")}"
     vars {
@@ -164,3 +155,13 @@ resource "openstack_compute_instance_v2" "fileserver" {
 
   user_data = "${data.template_file.init_fileserver.rendered}"
 }
+
+output "puppet_ip" {
+  value = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+}
+
+output "puppet_host" {
+  value = "${openstack_compute_instance_v2.puppet.name}"
+}
+
+
