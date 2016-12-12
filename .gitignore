@@ -1,0 +1,4 @@
+workspace
+variables.tf
+*.tfstate
+*.tfstate.backup
