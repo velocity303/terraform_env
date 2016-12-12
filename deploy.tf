@@ -8,8 +8,8 @@ resource "openstack_compute_instance_v2" "puppet" {
   image_name        = "centos_7_x86_64"
   image_id          = "5c509a1d-c7b2-4629-97ed-0d7ccd66e154"
   availability_zone = "opdx1"
-  flavor_id         = "540e0b6d-f0ce-48db-998b-0550c40405e0"
-  flavor_name       = "d1.large"
+  flavor_id         = "e1bc3af5-6798-44a0-bdae-ad03bc7ad357"
+  flavor_name       = "m1.large"
   key_pair          = "${var.openstack_keypair}"
   security_groups   = ["default", "sg0"]
 
