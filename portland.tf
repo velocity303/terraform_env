@@ -6,7 +6,7 @@ data "template_file" "init_fileserverpdx" {
     template = "${file("bootstrap/bootstrap_agent.tpl")}"
     vars {
         role            = "fileserver"
-        name            = "fileserver.portland.lab"
+        name            = "fileserverpdx.portland.lab"
         master_name     = "${openstack_compute_instance_v2.puppet.name}"
         masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
     }
