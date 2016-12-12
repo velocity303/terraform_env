@@ -36,7 +36,7 @@ function install_pe_puppetagent {
 extension_requests:
     pp_role:  $role
 YAML
-  curl -k https://puppet:8140/packages/current/install.bash | sudo bash
+  curl -k https://puppet:8140/packages/current/install.bash | bash
   service puppet start
 }
 
