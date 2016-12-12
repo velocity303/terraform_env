@@ -94,7 +94,7 @@ resource "openstack_compute_instance_v2" "gitlab" {
 
   network {
     name = "${var.tenant_network}"
-    floating_ip = "${openstack_compute_floatingip_v2.gitlab.address}"
+    floating_ip = "${openstack_compute_floatingip_v2.gitlabip.address}"
     access_network = true
   }
 
