@@ -16,28 +16,28 @@ function install_prereqs {
 }
 
 function install_poss_puppetagent {
-  sudo rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
-  sudo yum -y install puppet-agent
-  sudo echo '[agent]' >> /etc/puppetlabs/puppet/puppet.conf
-  sudo echo "server = puppet" >> /etc/puppetlabs/puppet/puppet.conf
-  sudo cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
+  rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+  yum -y install puppet-agent
+  echo '[agent]' >> /etc/puppetlabs/puppet/puppet.conf
+  echo "server = puppet" >> /etc/puppetlabs/puppet/puppet.conf
+  cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
 extension_requests:
     pp_role:  $role
 YAML
 
-  sudo service puppet start
+  service puppet start
 }
 
 function install_pe_puppetagent {
-  sudo mkdir -p /etc/puppetlabs/puppet
-  sudo echo '[agent]' >> /etc/puppetlabs/puppet/puppet.conf
-  sudo echo "server = puppet" >> /etc/puppetlabs/puppet/puppet.conf
-  sudo cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
+  mkdir -p /etc/puppetlabs/puppet
+  echo '[agent]' >> /etc/puppetlabs/puppet/puppet.conf
+  echo "server = puppet" >> /etc/puppetlabs/puppet/puppet.conf
+  cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
 extension_requests:
     pp_role:  $role
 YAML
   curl -k https://puppet:8140/packages/current/install.bash | sudo bash
-  sudo service puppet start
+  service puppet start
 }
 
 setup_networking
