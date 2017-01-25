@@ -18,6 +18,11 @@ resource "openstack_compute_floatingip_v2" "fileserverip" {
   pool = "ext-net-pdx1-opdx1"
 }
 
+resource "openstack_compute_floatingip_v2" "chocolateyip" {
+  pool = "ext-net-pdx1-opdx1"
+}
+
+
 data "template_file" "init_puppetmaster" {
     template = "${file("bootstrap/bootstrap_puppetmaster.tpl")}"
     vars {
@@ -68,6 +73,16 @@ data "template_file" "init_fileserver" {
         masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
     }
 }
+
+data "template_file" "init_chocolatey" {
+    template = "${file("bootstrap/bootstrap_windows_agent.tpl")}"
+    vars {
+        role            = "chocolatey_server"
+        master_name     = "${openstack_compute_instance_v2.puppet.name}"
+        masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+    }
+}
+
 
 
 resource "openstack_compute_instance_v2" "puppet" {
@@ -154,6 +169,23 @@ resource "openstack_compute_instance_v2" "fileserver" {
   }
 
   user_data = "${data.template_file.init_fileserver.rendered}"
+}
+
+resource "openstack_compute_instance_v2" "chocolatey" {
+  name              = "chocolatey.${var.dclocation}.lab"
+  image_name        = "windows_2012_r2_std_eval_x86_64"
+  availability_zone = "opdx1"
+  flavor_name       = "d1.large"
+  key_pair          = "${var.openstack_keypair}"
+  security_groups   = ["default", "sg0"]
+
+  network {
+    name = "${var.tenant_network}"
+    floating_ip = "${openstack_compute_floatingip_v2.chocolateyip.address}"
+    access_network = true
+  }
+
+  user_data = "${data.template_file.init_chocolatey.rendered}"
 }
 
 output "puppet_ip" {
