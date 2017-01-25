@@ -1,3 +1,5 @@
 workspace
+variables
 variables.tf
 *.tfstate*
+.terraform
