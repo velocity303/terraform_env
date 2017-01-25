@@ -15,18 +15,6 @@ function install_prereqs {
   yum -y install curl
 }
 
-function install_poss_puppetagent {
-  rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
-  yum -y install puppet-agent
-  echo '[agent]' >> /etc/puppetlabs/puppet/puppet.conf
-  echo "server = puppet" >> /etc/puppetlabs/puppet/puppet.conf
-  cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
-extension_requests:
-    pp_role:  $role
-YAML
-
-  service puppet start
-}
 
 function install_pe_puppetagent {
   mkdir -p /etc/puppetlabs/puppet
