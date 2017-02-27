@@ -14,7 +14,7 @@ EOM
 read -r -d '' PUBLIC_KEY << EOM
 ${ssh_pub_key}
 EOM
-DOWNLOAD_VERSION=$${DOWNLOAD_VERSION:-2016.4.2}
+DOWNLOAD_VERSION=$${DOWNLOAD_VERSION:-2016.5.1}
 DOWNLOAD_DIST=$${DOWNLOAD_DIST:-el}
 DOWNLOAD_RELEASE=$${DOWNLOAD_RELEASE:-7}
 DOWNLOAD_ARCH=$${DOWNLOAD_ARCH:-x86_64}
@@ -127,6 +127,12 @@ TEXT
 
 #Deploy Code
 function deploy_code_pe {
+  #create license key for bootstrap
+  curl --progress-bar \
+    -L \
+    -o "/etc/puppetlabs/license.key" \
+    -C - \
+    https://raw.githubusercontent.com/puppetlabs-seteam/puppet-module-role/master/files/license.key
   /opt/puppetlabs/bin/puppet-code deploy production -w
 }
 
