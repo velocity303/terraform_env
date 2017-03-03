@@ -48,7 +48,7 @@ resource "openstack_compute_instance_v2" "windows_node" {
   name              = "${var.name}.${var.location}.lab"
   image_name        = "windows_2012_r2_std_eval_x86_64"
   availability_zone = "opdx1"
-  flavor_name       = "m1.large"
+  flavor_name       = "g1.large"
   key_pair          = "${var.openstack_keypair}"
   security_groups   = ["default", "sg0"]
 
