@@ -95,7 +95,7 @@ module "consul03" {
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
-
+/*
 module "vault01" {
   source = "./linux_node"
 
@@ -139,3 +139,4 @@ module "windows02" {
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
+*/
