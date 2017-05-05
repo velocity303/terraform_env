@@ -41,10 +41,20 @@ module "fileserver" {
   puppet_master_ip = "${var.puppet_master_ip}"
 }
 
-module "webserver01" {
+module "gitlab" {
+  source = "./linux_large_node"
+
+  name = "gitlab"
+  role = "gitlab"
+  location = "infrastructure"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
+
+module "linuxnode01" {
   source = "./linux_node"
 
-  name = "webserver01"
+  name = "linuxnode01"
   role = "generic_website"
   location = "chicago"
   tenant_network = "chicago_network"
@@ -52,13 +62,24 @@ module "webserver01" {
   puppet_master_ip = "${var.puppet_master_ip}"
 }
 
-module "webserver02" {
+module "linuxnode02" {
   source = "./linux_node"
 
-  name = "webserver02"
+  name = "linuxnode02"
   role = "generic_website"
   location = "portland"
   tenant_network = "portland_network"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
+
+/*
+module "testnode01" {
+  source = "./linux_node"
+
+  name = "testnode01"
+  role = "testnode"
+  location = "infrastructure"
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
@@ -79,8 +100,8 @@ module "consul02" {
 
   name = "consul02"
   role = "consul"
-  location = "chicago"
-  tenant_network = "chicago_network"
+  location = "infrastructure"
+  tenant_network = "infrastructure_network"
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
@@ -90,30 +111,29 @@ module "consul03" {
 
   name = "consul03"
   role = "consul"
-  location = "portland"
-  tenant_network = "portland_network"
-  puppet_master_name = "${var.puppet_master_name}"
-  puppet_master_ip = "${var.puppet_master_ip}"
-}
-/*
-module "vault01" {
-  source = "./linux_node"
-
-  name = "vault01"
-  role = "vault"
   location = "infrastructure"
   tenant_network = "infrastructure_network"
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
 
-module "vault02" {
+*/
+module "sonarqube" {
+  source = "./linux_large_node"
+
+  name = "sonarqube"
+  role = "sonarqube"
+  location = "infrastructure"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
+
+module "icinga" {
   source = "./linux_node"
 
-  name = "vault02"
-  role = "vault"
-  location = "chicago"
-  tenant_network = "chicago_network"
+  name = "icinga"
+  role = "icinga_server"
+  location = "infrastructure"
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
@@ -139,4 +159,38 @@ module "windows02" {
   puppet_master_name = "${var.puppet_master_name}"
   puppet_master_ip = "${var.puppet_master_ip}"
 }
+
+/*
+module "windows03" {
+  source = "./windows_node"
+
+  name = "windows03"
+  role = "generic_website"
+  location = "chicago"
+  tenant_network = "chicago_network"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
+
+module "windows04" {
+  source = "./windows_node"
+
+  name = "windows04"
+  role = "generic_website"
+  location = "portland"
+  tenant_network = "portland_network"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
+
 */
+module "windows-test" {
+  source = "./windows_node"
+
+  name = "windows-test"
+  role = "active_directory"
+  location = "portland"
+  tenant_network = "portland_network"
+  puppet_master_name = "${var.puppet_master_name}"
+  puppet_master_ip = "${var.puppet_master_ip}"
+}
