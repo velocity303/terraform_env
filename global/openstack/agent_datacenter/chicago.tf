@@ -7,23 +7,25 @@ resource "openstack_compute_floatingip_v2" "myappchiip" {
 }
 
 data "template_file" "init_fileserverchi" {
-    template = "${file("bootstrap/bootstrap_agent.tpl")}"
-    vars {
-        role            = "fileserver"
-        name            = "fileserverchi.chicago.lab"
-        master_name     = "${openstack_compute_instance_v2.puppet.name}"
-        masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
-    }
+  template = "${file("bootstrap/bootstrap_agent.tpl")}"
+
+  vars {
+    role        = "fileserver"
+    name        = "fileserverchi.chicago.lab"
+    master_name = "${openstack_compute_instance_v2.puppet.name}"
+    masterip    = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+  }
 }
 
 data "template_file" "init_myappchi" {
-    template = "${file("bootstrap/bootstrap_agent.tpl")}"
-    vars {
-        role            = "myapp"
-        name            = "myappchi.chicago.lab"
-        master_name     = "${openstack_compute_instance_v2.puppet.name}"
-        masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
-    }
+  template = "${file("bootstrap/bootstrap_agent.tpl")}"
+
+  vars {
+    role        = "myapp"
+    name        = "myappchi.chicago.lab"
+    master_name = "${openstack_compute_instance_v2.puppet.name}"
+    masterip    = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+  }
 }
 
 resource "openstack_compute_instance_v2" "fileserverchi" {
@@ -35,8 +37,8 @@ resource "openstack_compute_instance_v2" "fileserverchi" {
   security_groups   = ["default", "sg0"]
 
   network {
-    name = "network1"
-    floating_ip = "${openstack_compute_floatingip_v2.fileserverchiip.address}"
+    name           = "network1"
+    floating_ip    = "${openstack_compute_floatingip_v2.fileserverchiip.address}"
     access_network = true
   }
 
@@ -52,11 +54,10 @@ resource "openstack_compute_instance_v2" "myappchi" {
   security_groups   = ["default", "sg0"]
 
   network {
-    name = "network1"
-    floating_ip = "${openstack_compute_floatingip_v2.myappchiip.address}"
+    name           = "network1"
+    floating_ip    = "${openstack_compute_floatingip_v2.myappchiip.address}"
     access_network = true
   }
 
   user_data = "${data.template_file.init_myappchi.rendered}"
 }
-

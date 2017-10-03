@@ -7,23 +7,25 @@ resource "openstack_compute_floatingip_v2" "myapppdx" {
 }
 
 data "template_file" "init_fileserverpdx" {
-    template = "${file("bootstrap/bootstrap_agent.tpl")}"
-    vars {
-        role            = "fileserver"
-        name            = "fileserverpdx.portland.lab"
-        master_name     = "${openstack_compute_instance_v2.puppet.name}"
-        masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
-    }
+  template = "${file("bootstrap/bootstrap_agent.tpl")}"
+
+  vars {
+    role        = "fileserver"
+    name        = "fileserverpdx.portland.lab"
+    master_name = "${openstack_compute_instance_v2.puppet.name}"
+    masterip    = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+  }
 }
 
 data "template_file" "init_myapppdx" {
-    template = "${file("bootstrap/bootstrap_agent.tpl")}"
-    vars {
-        role            = "myapp"
-        name            = "myapppdx.portland.lab"
-        master_name     = "${openstack_compute_instance_v2.puppet.name}"
-        masterip        = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
-    }
+  template = "${file("bootstrap/bootstrap_agent.tpl")}"
+
+  vars {
+    role        = "myapp"
+    name        = "myapppdx.portland.lab"
+    master_name = "${openstack_compute_instance_v2.puppet.name}"
+    masterip    = "${openstack_compute_instance_v2.puppet.network.0.fixed_ip_v4}"
+  }
 }
 
 resource "openstack_compute_instance_v2" "fileserverpdx" {
@@ -35,8 +37,8 @@ resource "openstack_compute_instance_v2" "fileserverpdx" {
   security_groups   = ["default", "sg0"]
 
   network {
-    name = "network2"
-    floating_ip = "${openstack_compute_floatingip_v2.fileserverpdxip.address}"
+    name           = "network2"
+    floating_ip    = "${openstack_compute_floatingip_v2.fileserverpdxip.address}"
     access_network = true
   }
 
@@ -52,11 +54,10 @@ resource "openstack_compute_instance_v2" "myapppdx" {
   security_groups   = ["default", "sg0"]
 
   network {
-    name = "network1"
-    floating_ip = "${openstack_compute_floatingip_v2.myapppdx.address}"
+    name           = "network1"
+    floating_ip    = "${openstack_compute_floatingip_v2.myapppdx.address}"
     access_network = true
   }
 
   user_data = "${data.template_file.init_myapppdx.rendered}"
 }
-
